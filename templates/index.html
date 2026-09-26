@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С Днём Рождения, {{ Юля }}! 🎂</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- Летающие элементы -->
+<div class="floating" style="top:8%;left:5%;">🎈</div>
+<div class="floating" style="top:18%;right:8%;">💖</div>
+<div class="floating" style="bottom:15%;left:10%;">🌸</div>
+<div class="floating" style="bottom:20%;right:12%;">✨</div>
+
+<main class="container">
+  <h1>С Днём Рождения, {{ friend_name }}!</h1>
+
+  {% if days_left is not none %}
+    <p class="days">До следующего ДР: <b>{{ days_left }}</b> дн.</p>
+  {% endif %}
+
+  <!-- Слайд-шоу -->
+  <div class="photo-frame" id="photoFrame">
+    {% if photos %}
+      <img id="slide" src="{{ photos[0] }}" alt="Фото">
+    {% else %}
+      <div class="no-photo">📷<br>Положи фото в<br><code>static/photos/</code></div>
+    {% endif %}
+  </div>
+
+  {% if photos|length > 1 %}
+    <div class="dots" id="dots">
+      {% for _ in photos %}
+        <span class="dot {% if loop.first %}active{% endif %}"></span>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="message">
+    <p class="highlight">Сегодня твой день! ✨</p>
+    <p>Пусть каждый день приносит радость, мечты сбываются, а улыбка не сходит с лица. Спасибо, что ты рядом — ты лучшая! 💖</p>
+    <p class="signature">С любовью, {{ Рыжий }} 💕</p>
+  </div>
+
+  <div class="controls">
+    <button class="btn primary" id="confettiBtn">🎁 Запустить конфетти!</button>
+
+    {% if music %}
+      <button class="btn secondary" id="musicBtn">▶ Включить музыку</button>
+      <audio id="audio" src="{{ music }}" loop></audio>
+    {% else %}
+      <button class="btn secondary" disabled>🎵 Нет музыки</button>
+    {% endif %}
+  </div>
+
+  <!-- Пожелания гостей -->
+  <section class="wishes">
+    <h2>💌 Оставить пожелание</h2>
+    <div class="wish-form">
+      <input id="wishAuthor" placeholder="Твоё имя" maxlength="50">
+      <textarea id="wishText" placeholder="Твоё пожелание" maxlength="500"></textarea>
+      <button class="btn primary" id="wishSend">Отправить</button>
+    </div>
+    <div class="wish-list" id="wishList"></div>
+  </section>
+
+</main>
+
+<script>
+  window.PHOTOS = {{ photos|tojson }};
+  window.SLIDE_INTERVAL = {{ slide_interval }};
+</script>
+<script src="/static/script.js"></script>
+</body>
+</html>
